@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Globalization;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Arbitragem.Dominio.Conversores;
 using Arbitragem.Dominio.Exceptions;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -38,46 +39,29 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
 
             var dadosDoResultado = resultadoDinamico?.data;
 
-            var exchange = CriarExchangeComOsResultadosObtidosDaChamadaHttp(dadosDoResultado);
+            var exchange = BitcoinTradeConversor.ConverterDadosDaExchange(dadosDoResultado);
 
             return exchange;
         }
 
-        private static Exchange CriarExchangeComOsResultadosObtidosDaChamadaHttp(dynamic resultadoDaChamadaHttp)
+
+        public async Task<IEnumerable<Ordem>> ObterOrdensDaExchange()
         {
-            const string cultura = "pt-br";
+            var resposta = await _clienteHttp.GetAsync("/v1/public/BTC/orders");
 
-            double.TryParse(Convert.ToString(resultadoDaChamadaHttp?.buy),
-               NumberStyles.Currency,
-               new CultureInfo(cultura),
-               out double precoOfertaAtual);
+            resposta.EnsureSuccessStatusCode();
 
-            double.TryParse(Convert.ToString(resultadoDaChamadaHttp?.last),
-              NumberStyles.Currency,
-              new CultureInfo(cultura),
-              out double precoUltimaOfertaEfetivada);
+            var resultadoEmString = await resposta.Content
+                .ReadAsStringAsync();
 
-            double.TryParse(Convert.ToString(resultadoDaChamadaHttp?.high),
-             NumberStyles.Currency,
-             new CultureInfo(cultura),
-             out double precoOfertaMaisAltaDoDia);
+            dynamic resultadoDinamico = JsonConvert.DeserializeObject(resultadoEmString);
 
-            double.TryParse(Convert.ToString(resultadoDaChamadaHttp?.low),
-             NumberStyles.Currency,
-             new CultureInfo(cultura),
-             out double precoOfertaMaisBaixaDoDia);
+            var dadosDoResultado = resultadoDinamico?.data;
+           
+            var ordens = BitcoinTradeConversor.ConverterOrdensDaExchange(dadosDoResultado);
 
-            double.TryParse(Convert.ToString(resultadoDaChamadaHttp?.sell),
-              NumberStyles.Currency,
-              new CultureInfo(cultura),
-              out double precoVendaEstimadoPelaExchange);
-
-            var exchange = new Exchange(Enumeradores.Enumeradores.Exchanges.BitcoinTrade, precoOfertaAtual,
-                precoUltimaOfertaEfetivada, precoOfertaMaisAltaDoDia, precoOfertaMaisBaixaDoDia,
-                precoVendaEstimadoPelaExchange);
-
-
-            return exchange;
+            return ordens;
         }
+
     }
 }

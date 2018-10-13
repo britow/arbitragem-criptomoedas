@@ -1,5 +1,6 @@
 ﻿using Arbitragem.Dominio;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +19,14 @@ namespace Arbitragem.Console
         {
             System.Console.WriteLine("Iniciando...");
 
-            await _servicoDeArbitragem.Iniciar();
+            try
+            {
+                await _servicoDeArbitragem.Iniciar();
+            }
+            catch(Exception excecao)
+            {
+                System.Console.WriteLine($"Ocorreu uma excecao: {excecao}");
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

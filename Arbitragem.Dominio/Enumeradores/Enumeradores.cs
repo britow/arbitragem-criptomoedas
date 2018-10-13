@@ -6,5 +6,11 @@
         {
             BitcoinTrade
         }
+
+        public enum TipoDeOrdem
+        {
+            Compra,
+            Venda
+        }
     }
 }
