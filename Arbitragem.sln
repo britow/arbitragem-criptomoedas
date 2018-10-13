@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arbitragem.Console", "Arbitragem.Console\Arbitragem.Console.csproj", "{4E4C7B7B-40AC-4B63-A8C5-5C2A5508CEDA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arbitragem.Dominio", "Arbitragem.Dominio\Arbitragem.Dominio.csproj", "{AB2AB0A7-CB05-4800-8C63-E8347242A17B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E4C7B7B-40AC-4B63-A8C5-5C2A5508CEDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E4C7B7B-40AC-4B63-A8C5-5C2A5508CEDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E4C7B7B-40AC-4B63-A8C5-5C2A5508CEDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E4C7B7B-40AC-4B63-A8C5-5C2A5508CEDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB2AB0A7-CB05-4800-8C63-E8347242A17B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB2AB0A7-CB05-4800-8C63-E8347242A17B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB2AB0A7-CB05-4800-8C63-E8347242A17B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB2AB0A7-CB05-4800-8C63-E8347242A17B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38F2FC90-E13D-4167-A062-E3B3C9F58257}
+	EndGlobalSection
+EndGlobal
