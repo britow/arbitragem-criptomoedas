@@ -10,6 +10,8 @@ namespace Arbitragem.Console.Extensoes
         public static void AdicionarInjecoesDeDependencia(this IServiceCollection services)
         {
             services.AddScoped<ConstrutorExchangeBitcoinTrade>();
+            services.AddScoped<ConstrutorExchangeMercadoBitcoin>();
+
             services.AddScoped<FabricaDeContrutoresDeExchanges>();
             services.AddScoped<IConstrutorGeralDeExchanges, ConstrutorGeralDeExchanges>();
             services.AddScoped<IServicoDeArbitragem, ServicoDeArbitragem>();

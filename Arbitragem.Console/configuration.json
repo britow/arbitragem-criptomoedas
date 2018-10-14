@@ -1,6 +1,8 @@
 {
   "BitcoinTrade": {
     "EnderecoBase": "https://api.bitcointrade.com.br"
+  },
+  "MercadoBitcoin": {
+    "EnderecoBase": "https://www.mercadobitcoin.net"
   }
-
 }
