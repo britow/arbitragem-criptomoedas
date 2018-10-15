@@ -15,6 +15,7 @@ namespace Arbitragem.Console.Extensoes
             services.AddScoped<ConstrutorExchangeBitcoinTrade>();
             services.AddScoped<ConstrutorExchangeMercadoBitcoin>();
             services.AddScoped<ConstrutorExchangeBitCambio>();
+            services.AddScoped<ConstrutorExchangeBraziliex>();
 
             services.AddScoped<FabricaDeContrutoresDeExchanges>();
             services.AddScoped<IConstrutorGeralDeExchanges, ConstrutorGeralDeExchanges>();

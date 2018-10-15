@@ -21,6 +21,10 @@ namespace Arbitragem.Console.Extensoes
                 .AddPolicyHandlerFromRegistry((policyRegistry, httpRequestMessage) =>
                     policyRegistry.Get<IAsyncPolicy<HttpResponseMessage>>(httpRequestMessage.Method == HttpMethod.Get ? "PoliticaDeRetentativa" : "SemPoliticaOp"));
 
+            services.AddHttpClient<BraziliexServicoHttp>()
+               .AddPolicyHandlerFromRegistry((policyRegistry, httpRequestMessage) =>
+                   policyRegistry.Get<IAsyncPolicy<HttpResponseMessage>>(httpRequestMessage.Method == HttpMethod.Get ? "PoliticaDeRetentativa" : "SemPoliticaOp"));
+
         }
     }
 }

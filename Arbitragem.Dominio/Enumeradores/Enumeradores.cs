@@ -6,7 +6,8 @@
         {
             BitcoinTrade,
             MercadoBitcoin,
-            BitCambio
+            BitCambio,
+            Braziliex
         }
 
         public enum TipoDeOrdem
