@@ -4,12 +4,14 @@
     {
         private readonly ConstrutorExchangeBitcoinTrade _construtorExchangeBitcoinTrade;
         private readonly ConstrutorExchangeMercadoBitcoin _construtorExchangeMercadoBitcoin;
+        private readonly ConstrutorExchangeBitCambio _construtorExchangeBitCambio;
 
         public FabricaDeContrutoresDeExchanges(ConstrutorExchangeBitcoinTrade construtorExchangeBitcoinTrade,
-            ConstrutorExchangeMercadoBitcoin construtorExchangeMercadoBitcoin)
+            ConstrutorExchangeMercadoBitcoin construtorExchangeMercadoBitcoin, ConstrutorExchangeBitCambio construtorExchangeBitCambio)
         {
             _construtorExchangeBitcoinTrade = construtorExchangeBitcoinTrade;
             _construtorExchangeMercadoBitcoin = construtorExchangeMercadoBitcoin;
+            _construtorExchangeBitCambio = construtorExchangeBitCambio;
         }
 
         public ConstrutorExchange Criar(Enumeradores.Enumeradores.Exchanges exchanges)
@@ -20,6 +22,8 @@
                     return _construtorExchangeBitcoinTrade;
                 case Enumeradores.Enumeradores.Exchanges.MercadoBitcoin:
                     return _construtorExchangeMercadoBitcoin;
+                case Enumeradores.Enumeradores.Exchanges.BitCambio:
+                    return _construtorExchangeBitCambio;
                 default:
                     return _construtorExchangeBitcoinTrade;
             }

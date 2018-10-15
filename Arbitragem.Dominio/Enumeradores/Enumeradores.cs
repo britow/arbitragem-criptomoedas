@@ -5,7 +5,8 @@
         public enum Exchanges
         {
             BitcoinTrade,
-            MercadoBitcoin
+            MercadoBitcoin,
+            BitCambio
         }
 
         public enum TipoDeOrdem

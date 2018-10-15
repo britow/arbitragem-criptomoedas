@@ -17,13 +17,11 @@ namespace Arbitragem.Console
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            System.Console.WriteLine("Iniciando...");
-
             try
             {
-                await _servicoDeArbitragem.Iniciar();
+                await Task.Run(() => { _servicoDeArbitragem.Iniciar(); }, cancellationToken);
             }
-            catch(Exception excecao)
+            catch (Exception excecao)
             {
                 System.Console.WriteLine($"Ocorreu uma excecao: {excecao}");
             }
@@ -31,8 +29,6 @@ namespace Arbitragem.Console
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            System.Console.WriteLine("Finalizando...");
-
             return Task.CompletedTask;
         }
     }

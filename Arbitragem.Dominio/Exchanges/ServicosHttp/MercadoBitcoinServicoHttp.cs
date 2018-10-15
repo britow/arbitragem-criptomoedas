@@ -35,11 +35,8 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
             var resultadoEmString = await resposta.Content
                 .ReadAsStringAsync();
 
-            dynamic resultadoDinamico = JsonConvert.DeserializeObject(resultadoEmString);
-
-            var dadosDoResultado = resultadoDinamico?.ticker;
-
-            var exchange = MercadoBitcoinConversor.ConverterDadosDaExchange(dadosDoResultado);
+            var exchange = JsonConvert.DeserializeObject<Exchange>(resultadoEmString,
+                new MercadoBitcoinExchangeJsonConverter());
 
             return exchange;
         }
@@ -54,9 +51,8 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
             var resultadoEmString = await resposta.Content
                 .ReadAsStringAsync();
 
-            dynamic resultadoDinamico = JsonConvert.DeserializeObject(resultadoEmString);
-
-            var ordens = MercadoBitcoinConversor.ConverterOrdensDaExchange(resultadoDinamico);
+            var ordens = JsonConvert.DeserializeObject<IEnumerable<Ordem>>(resultadoEmString,
+                new MercadoBitcoinOrdensJsonConverter());
 
             return ordens;
         }

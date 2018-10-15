@@ -5,23 +5,22 @@ using System;
 
 namespace Arbitragem.Dominio.Conversores
 {
-    public class BitcoinTradeExchangeJsonConverter : JsonConverter<Exchange>
+    public class BitCambioExchangeJsonConverter : JsonConverter<Exchange>
     {
         public override void WriteJson(JsonWriter writer, Exchange value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
 
-        public override Exchange ReadJson(JsonReader reader, Type objectType, Exchange existingValue, bool hasExistingValue,
+        public override Exchange ReadJson(JsonReader reader, Type objectType, Exchange existingValue,
+            bool hasExistingValue,
             JsonSerializer serializer)
         {
             if (reader.TokenType != JsonToken.StartObject) return null;
 
-            var item = JObject.Load(reader);
+            var dados = JObject.Load(reader);
 
-            if (item["data"] == null) return null;
-
-            var dados = item["data"];
+            if (dados == null) return null;
 
             var precoOfertaAtual = dados["buy"].Value<double>();
             var precoUltimaOfertaEfetivada = dados["last"].Value<double>();
@@ -29,7 +28,7 @@ namespace Arbitragem.Dominio.Conversores
             var precoOfertaMaisBaixaDoDia = dados["low"].Value<double>();
             var precoVendaEstimadoPelaExchange = dados["sell"].Value<double>();
 
-            var exchange = new Exchange(Enumeradores.Enumeradores.Exchanges.BitcoinTrade, precoOfertaAtual,
+            var exchange = new Exchange(Enumeradores.Enumeradores.Exchanges.BitCambio, precoOfertaAtual,
                 precoUltimaOfertaEfetivada, precoOfertaMaisAltaDoDia, precoOfertaMaisBaixaDoDia,
                 precoVendaEstimadoPelaExchange);
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Arbitragem.Dominio.Arbitragens;
 
 namespace Arbitragem.Dominio.Exchanges
 {
@@ -16,21 +17,9 @@ namespace Arbitragem.Dominio.Exchanges
         public double PrecoVendaEstimadoPelaExchange { get; }
         public double Taxas { get; }
 
-        public IEnumerable<Ordem> OrdensDeCompra
-        {
-            get
-            {
-                return _ordensDeCompra;
-            }
-        }
+        public IEnumerable<Ordem> OrdensDeCompra => _ordensDeCompra;
 
-        public IEnumerable<Ordem> OrdensDeVenda
-        {
-            get
-            {
-                return _ordensDeVenda;
-            }
-        }
+        public IEnumerable<Ordem> OrdensDeVenda => _ordensDeVenda;
 
         public Exchange(Enumeradores.Enumeradores.Exchanges nome, double precoOfertaAtual,
             double precoUltimaOfertaEfetivada, double precoOfertaMaisAltaDoDia, double precoOfertaMaisBaixaDoDia,
@@ -46,11 +35,22 @@ namespace Arbitragem.Dominio.Exchanges
 
         public void AdicionarOrdens(IEnumerable<Ordem> ordens)
         {
+            var arrayDeOrdens = ordens as Ordem[] ?? ordens.ToArray();
+
             _ordensDeCompra = _ordensDeCompra
-                .Concat(ordens.Where(x => x.TipoDeOrdem == Enumeradores.Enumeradores.TipoDeOrdem.Compra));
+                .Concat(arrayDeOrdens.Where(x => x.TipoDeOrdem == Enumeradores.Enumeradores.TipoDeOrdem.Compra));
 
             _ordensDeVenda = _ordensDeVenda
-                .Concat(ordens.Where(x => x.TipoDeOrdem == Enumeradores.Enumeradores.TipoDeOrdem.Venda));
+                .Concat(arrayDeOrdens.Where(x => x.TipoDeOrdem == Enumeradores.Enumeradores.TipoDeOrdem.Venda));
+        }
+
+        public ResultadoArbitragem ObterDadosDeComparacaoDeVendaCompraEntreExchanges(Exchange exchange)
+        {
+            var porcentagem = ((exchange.PrecoVendaEstimadoPelaExchange - PrecoVendaEstimadoPelaExchange) / PrecoVendaEstimadoPelaExchange) * 100;
+
+            var resultadoArbitragem = new ResultadoArbitragem(Nome, exchange.Nome, porcentagem);
+
+            return resultadoArbitragem;
         }
 
     }

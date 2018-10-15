@@ -16,6 +16,11 @@ namespace Arbitragem.Console.Extensoes
             services.AddHttpClient<MercadoBitcoinServicoHttp>()
                .AddPolicyHandlerFromRegistry((policyRegistry, httpRequestMessage) =>
                    policyRegistry.Get<IAsyncPolicy<HttpResponseMessage>>(httpRequestMessage.Method == HttpMethod.Get ? "PoliticaDeRetentativa" : "SemPoliticaOp"));
+
+            services.AddHttpClient<BitCambioServicoHttp>()
+                .AddPolicyHandlerFromRegistry((policyRegistry, httpRequestMessage) =>
+                    policyRegistry.Get<IAsyncPolicy<HttpResponseMessage>>(httpRequestMessage.Method == HttpMethod.Get ? "PoliticaDeRetentativa" : "SemPoliticaOp"));
+
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Arbitragem.Dominio.Conversores;
@@ -10,16 +9,16 @@ using Newtonsoft.Json;
 
 namespace Arbitragem.Dominio.Exchanges.ServicosHttp
 {
-    public class BitcoinTradeServicoHttp
+    public class BitCambioServicoHttp
     {
         private readonly HttpClient _clienteHttp;
 
-        public BitcoinTradeServicoHttp(HttpClient clienteHttp, IConfiguration configuration)
+        public BitCambioServicoHttp(HttpClient clienteHttp, IConfiguration configuration)
         {
-            var uri = configuration[$"{Enumeradores.Enumeradores.Exchanges.BitcoinTrade}:EnderecoBase"];
+            var uri = configuration[$"{Enumeradores.Enumeradores.Exchanges.BitCambio}:EnderecoBase"];
 
             if (string.IsNullOrWhiteSpace(uri))
-                throw new ExcecaoArbitragem($"EnderecoBase não foi encontrado para a Exchange {Enumeradores.Enumeradores.Exchanges.BitcoinTrade}");
+                throw new ExcecaoArbitragem($"EnderecoBase não foi encontrado para a Exchange {Enumeradores.Enumeradores.Exchanges.BitCambio}");
 
             clienteHttp.BaseAddress = new Uri(uri);
             clienteHttp.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -29,7 +28,7 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
 
         public async Task<Exchange> ObterInformacoesDaExchange()
         {
-            var resposta = await _clienteHttp.GetAsync("/v1/public/BTC/ticker");
+            var resposta = await _clienteHttp.GetAsync("/api/v1/BRL/ticker?crypto_currency=BTC");
 
             resposta.EnsureSuccessStatusCode();
 
@@ -37,7 +36,7 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
                 .ReadAsStringAsync();
 
             var exchange = JsonConvert.DeserializeObject<Exchange>(resultadoEmString,
-                new BitcoinTradeExchangeJsonConverter());
+                new BitCambioExchangeJsonConverter());
 
             return exchange;
         }
@@ -45,7 +44,7 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
 
         public async Task<IEnumerable<Ordem>> ObterOrdensDaExchange()
         {
-            var resposta = await _clienteHttp.GetAsync("/v1/public/BTC/orders");
+            var resposta = await _clienteHttp.GetAsync("/api/v1/BRL/orderbook?crypto_currency=BTC");
 
             resposta.EnsureSuccessStatusCode();
 
@@ -53,10 +52,9 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
                 .ReadAsStringAsync();
 
             var ordens = JsonConvert.DeserializeObject<IEnumerable<Ordem>>(resultadoEmString,
-                new BitcoinTradeOrdensJsonConverter());
+                new BitCambioOrdensJsonConverter());
 
             return ordens;
         }
-
     }
 }

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Arbitragem.Dominio.Arbitragens.Acoes;
 using Arbitragem.Dominio.Exchanges.Construtores;
 
 namespace Arbitragem.Dominio
@@ -7,23 +7,30 @@ namespace Arbitragem.Dominio
     public class ServicoDeArbitragem : IServicoDeArbitragem
     {
         private readonly IConstrutorGeralDeExchanges _construtorGeralDeExchanges;
-        public ServicoDeArbitragem(IConstrutorGeralDeExchanges construtorGeralDeExchanges)
+
+        private readonly Acao _acao;
+
+        public ServicoDeArbitragem(IConstrutorGeralDeExchanges construtorGeralDeExchanges, Acao acao)
         {
             _construtorGeralDeExchanges = construtorGeralDeExchanges;
+            _acao = acao;
         }
 
         public async Task Iniciar()
         {
             await _construtorGeralDeExchanges.ConstruirTodas();
 
-            var possiveisArbitragens = ObterListaDePossiveisArbitragens();
+            var quantidadeDeBitcoinsParaNegociar = 0.34;
+
+            var arbitragem = new Arbitragens.Arbitragem(_construtorGeralDeExchanges.Exchanges, quantidadeDeBitcoinsParaNegociar);
+
+            var resultados = arbitragem.ObterResultadoDaArbitragem();
+
+            _acao.Executar(resultados);
         }
 
-        private static IEnumerable<Arbitragens.Arbitragem> ObterListaDePossiveisArbitragens()
-        {
-           return new List<Arbitragens.Arbitragem>();
-        }
+
     }
 
-    
+
 }

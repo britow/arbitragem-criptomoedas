@@ -4,5 +4,8 @@
   },
   "MercadoBitcoin": {
     "EnderecoBase": "https://www.mercadobitcoin.net"
-  }
+  },
+  "BitCambio": {
+    "EnderecoBase": "https://api.blinktrade.com"
+  } 
 }
