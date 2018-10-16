@@ -10,5 +10,12 @@
   },
   "Braziliex": {
     "EnderecoBase": "https://braziliex.com"
+  },
+  "FlowBTC": {
+    "EnderecoBase": "https://publicapi.flowbtc.com.br"
+  },
+  "Configuracoes": {
+    "IntervaloDeExecucaoEmMinutos": 5,
+    "CulturaInfo": "pt-br"
   }
 }

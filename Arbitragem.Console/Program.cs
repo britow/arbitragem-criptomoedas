@@ -24,7 +24,6 @@ namespace Arbitragem.Console
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-
                     services.AdicionarPoliticas();
 
                     services.AdicionarClientesHttp();

@@ -1,21 +1,24 @@
 ﻿namespace Arbitragem.Dominio.Exchanges.Construtores
 {
-    public class FabricaDeContrutoresDeExchanges
+    public sealed class FabricaDeContrutoresDeExchanges
     {
         private readonly ConstrutorExchangeBitcoinTrade _construtorExchangeBitcoinTrade;
         private readonly ConstrutorExchangeMercadoBitcoin _construtorExchangeMercadoBitcoin;
         private readonly ConstrutorExchangeBitCambio _construtorExchangeBitCambio;
         private readonly ConstrutorExchangeBraziliex _construtorExchangeBraziliex;
+        private readonly ConstrutorExchangeFlowBTC _construtorExchangeFlowBtc;
 
         public FabricaDeContrutoresDeExchanges(ConstrutorExchangeBitcoinTrade construtorExchangeBitcoinTrade,
             ConstrutorExchangeMercadoBitcoin construtorExchangeMercadoBitcoin,
             ConstrutorExchangeBitCambio construtorExchangeBitCambio,
-            ConstrutorExchangeBraziliex construtorExchangeBraziliex)
+            ConstrutorExchangeBraziliex construtorExchangeBraziliex,
+            ConstrutorExchangeFlowBTC construtorExchangeFlowBtc)
         {
             _construtorExchangeBitcoinTrade = construtorExchangeBitcoinTrade;
             _construtorExchangeMercadoBitcoin = construtorExchangeMercadoBitcoin;
             _construtorExchangeBitCambio = construtorExchangeBitCambio;
             _construtorExchangeBraziliex = construtorExchangeBraziliex;
+            _construtorExchangeFlowBtc = construtorExchangeFlowBtc;
         }
 
         public ConstrutorExchange Criar(Enumeradores.Enumeradores.Exchanges exchanges)
@@ -30,6 +33,8 @@
                     return _construtorExchangeBitCambio;
                 case Enumeradores.Enumeradores.Exchanges.Braziliex:
                     return _construtorExchangeBraziliex;
+                case Enumeradores.Enumeradores.Exchanges.FlowBTC:
+                    return _construtorExchangeFlowBtc;
                 default:
                     return _construtorExchangeBitcoinTrade;
             }

@@ -10,7 +10,8 @@ namespace Arbitragem.Dominio.Arbitragens.Acoes
         {
             System.Console.WriteLine("");
             System.Console.WriteLine("");
-            System.Console.WriteLine($"-------------------- Resultados --------------------");
+            System.Console.WriteLine("-------------------- Resultados --------------------");
+            System.Console.WriteLine("");
 
             var resultadoArbitragems = resultados as ResultadoArbitragem[] ?? resultados.ToArray();
 
@@ -20,8 +21,12 @@ namespace Arbitragem.Dominio.Arbitragens.Acoes
             foreach (var resultado in resultadoFiltrado)
             {
                 System.Console.WriteLine(
-                    $"Caso compre Bitcoins da {resultado.ComprarDe} e venda para {resultado.VendarPara},{Environment.NewLine}voce ira ganhar uma porcentagem de {resultado.Porcentagem:0.00}%");
+                    $"Caso compre Bitcoins da {resultado.ComprarDe} preco atual {resultado.PrecoDeCompra:C} e venda{Environment.NewLine}para {resultado.VendarPara} preco atual {resultado.PrecoDeVenda:C}, voce ira ganhar uma porcentagem{Environment.NewLine}de {resultado.Porcentagem:0.00}%");
+
+                System.Console.WriteLine("");
             }
         }
+
     }
+
 }

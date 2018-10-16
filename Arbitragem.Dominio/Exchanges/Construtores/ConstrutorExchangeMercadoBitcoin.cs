@@ -18,7 +18,7 @@ namespace Arbitragem.Dominio.Exchanges.Construtores
             exchange = await _mercadoBitcoinServicoHttp.ObterInformacoesDaExchange();
 
             if (exchange == null)
-                throw new ExcecaoArbitragem($"Exchange {Enumeradores.Enumeradores.Exchanges.BitcoinTrade} não retornou dados.");
+                throw new ExcecaoArbitragem($"Exchange {Enumeradores.Enumeradores.Exchanges.MercadoBitcoin} não retornou dados.");
 
             var ordens = await _mercadoBitcoinServicoHttp.ObterOrdensDaExchange();
 

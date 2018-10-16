@@ -7,7 +7,8 @@
             BitcoinTrade,
             MercadoBitcoin,
             BitCambio,
-            Braziliex
+            Braziliex,
+            FlowBTC
         }
 
         public enum TipoDeOrdem

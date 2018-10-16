@@ -48,7 +48,8 @@ namespace Arbitragem.Dominio.Exchanges
         {
             var porcentagem = ((exchange.PrecoVendaEstimadoPelaExchange - PrecoVendaEstimadoPelaExchange) / PrecoVendaEstimadoPelaExchange) * 100;
 
-            var resultadoArbitragem = new ResultadoArbitragem(Nome, exchange.Nome, porcentagem);
+            var resultadoArbitragem = new ResultadoArbitragem(Nome, exchange.Nome, porcentagem,
+                 PrecoVendaEstimadoPelaExchange, exchange.PrecoVendaEstimadoPelaExchange);
 
             return resultadoArbitragem;
         }
