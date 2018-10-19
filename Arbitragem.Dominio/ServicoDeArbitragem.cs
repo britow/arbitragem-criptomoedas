@@ -20,7 +20,7 @@ namespace Arbitragem.Dominio
         {
             await _construtorGeralDeExchanges.ConstruirTodas();
 
-            var quantidadeDeBitcoinsParaNegociar = 0.34;
+            var quantidadeDeBitcoinsParaNegociar = 5.34;
 
             var arbitragem = new Arbitragens.Arbitragem(_construtorGeralDeExchanges.Exchanges, quantidadeDeBitcoinsParaNegociar);
 

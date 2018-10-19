@@ -36,9 +36,10 @@ namespace Arbitragem.Dominio.Arbitragens
                 foreach (var exchangeParaComparar in todasExchangesExcetoAusadaParaComparacao)
                 {
                     var resultadoDeArbitragem = exchange
-                        .ObterDadosDeComparacaoDeVendaCompraEntreExchanges(exchangeParaComparar);
+                        .ObterDadosDeComparacaoDeVendaCompraEntreExchanges(exchangeParaComparar, QuantidadeDeBitcoinsParaNegociar);
 
-                    yield return resultadoDeArbitragem;
+                    if (resultadoDeArbitragem != null)
+                        yield return resultadoDeArbitragem;
                 }
             }
 

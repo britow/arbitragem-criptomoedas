@@ -44,14 +44,109 @@ namespace Arbitragem.Dominio.Exchanges
                 .Concat(arrayDeOrdens.Where(x => x.TipoDeOrdem == Enumeradores.Enumeradores.TipoDeOrdem.Venda));
         }
 
-        public ResultadoArbitragem ObterDadosDeComparacaoDeVendaCompraEntreExchanges(Exchange exchange)
+        public ResultadoArbitragem ObterDadosDeComparacaoDeVendaCompraEntreExchanges(Exchange exchange, double quantidadeDeBitcoinsParaNegociar)
         {
-            var porcentagem = ((exchange.PrecoVendaEstimadoPelaExchange - PrecoVendaEstimadoPelaExchange) / PrecoVendaEstimadoPelaExchange) * 100;
+            var porcentagemDeGanho = ((exchange.PrecoVendaEstimadoPelaExchange - PrecoVendaEstimadoPelaExchange) / PrecoVendaEstimadoPelaExchange) * 100;
 
-            var resultadoArbitragem = new ResultadoArbitragem(Nome, exchange.Nome, porcentagem,
-                 PrecoVendaEstimadoPelaExchange, exchange.PrecoVendaEstimadoPelaExchange);
+            if (porcentagemDeGanho <= 0) return null;
 
-            return resultadoArbitragem;
+            var somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade = 0d;
+
+            var ordensParaComprarQueAtendemPreco = OrdensDeVenda
+                .Where(x => x.Preco < exchange.PrecoVendaEstimadoPelaExchange);
+
+            var ordensParaComprarQueAtendemPrecoQuantidade = new List<Ordem>();
+
+            foreach (var ordem in ordensParaComprarQueAtendemPreco)
+            {
+                var resultadoDaSomatoria = somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade + ordem.Quantidade;
+
+                if (resultadoDaSomatoria > quantidadeDeBitcoinsParaNegociar)
+                {
+                    var diferencaParaAtingirQuantidadeDeBitcoinsParaNegociar = quantidadeDeBitcoinsParaNegociar - somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade;
+
+                    somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade = quantidadeDeBitcoinsParaNegociar;
+
+                    ordensParaComprarQueAtendemPrecoQuantidade.Add(new Ordem(ordem.CodigoDaOrdem, ordem.Preco,
+                        diferencaParaAtingirQuantidadeDeBitcoinsParaNegociar, ordem.TipoDeOrdem));
+
+                    break;
+                }
+
+                somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade += ordem.Quantidade;
+
+                ordensParaComprarQueAtendemPrecoQuantidade.Add(ordem);
+            }
+
+
+            var somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade = 0d;
+
+            var ordensParaVenderQueAtendemPreco = exchange.OrdensDeCompra
+                .Where(x => x.Preco > PrecoVendaEstimadoPelaExchange);
+
+            var ordensParaVenderQueAtendemPrecoQuantidade = new List<Ordem>();
+
+            foreach (var ordem in ordensParaVenderQueAtendemPreco)
+            {
+                var resultadoDaSomatoria = somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade + ordem.Quantidade;
+
+                if (resultadoDaSomatoria > somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade)
+                {
+                    var diferencaParaAtingirQuantidadeDeBitcoinsParaNegociar = somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade - somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade;
+
+                    ordensParaVenderQueAtendemPrecoQuantidade.Add(new Ordem(ordem.CodigoDaOrdem, ordem.Preco,
+                        diferencaParaAtingirQuantidadeDeBitcoinsParaNegociar, ordem.TipoDeOrdem));
+
+                    somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade =
+                        somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade;
+
+                    break;
+                }
+
+                somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade += ordem.Quantidade;
+
+                ordensParaVenderQueAtendemPrecoQuantidade.Add(ordem);
+            }
+
+
+
+            if (somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade > 0 &&
+                somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade > 0 &&
+                somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade <
+                somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade)
+            {
+                var ordensOrdenadasPelasMaisCaras = ordensParaComprarQueAtendemPrecoQuantidade
+                    .OrderByDescending(x => x.Preco);
+
+                var subtracaoDeOrdensParaComprarQueAtendemPrecoQuantidade =
+                    somatorioDeOrdensParaComprarQueAtendemPrecoQuantidade;
+
+                foreach (var ordem in ordensOrdenadasPelasMaisCaras)
+                {
+                    subtracaoDeOrdensParaComprarQueAtendemPrecoQuantidade -=  ordem.Quantidade;
+
+                    if (subtracaoDeOrdensParaComprarQueAtendemPrecoQuantidade < somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade)
+                    {
+                        var quantidadeParaIgualarVendaCompra = somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade - subtracaoDeOrdensParaComprarQueAtendemPrecoQuantidade;
+
+                        ordensParaComprarQueAtendemPrecoQuantidade.Remove(ordem);
+
+                        ordensParaComprarQueAtendemPrecoQuantidade.Add(new Ordem(ordem.CodigoDaOrdem, ordem.Preco,
+                            quantidadeParaIgualarVendaCompra, ordem.TipoDeOrdem));
+
+                        subtracaoDeOrdensParaComprarQueAtendemPrecoQuantidade =
+                            somatorioDeOrdensParaVenderQueAtendemPrecoQuantidade;
+
+                        break;
+                    }
+
+                    ordensParaComprarQueAtendemPrecoQuantidade.Remove(ordem);
+                }
+
+            }
+
+            return new ResultadoArbitragem(Nome, exchange.Nome, quantidadeDeBitcoinsParaNegociar, ordensParaVenderQueAtendemPrecoQuantidade,
+                ordensParaComprarQueAtendemPrecoQuantidade);
         }
 
     }

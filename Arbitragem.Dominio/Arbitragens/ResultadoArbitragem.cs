@@ -1,27 +1,51 @@
 ﻿
+using System.Collections.Generic;
+using System.Linq;
+using Arbitragem.Dominio.Exchanges;
+
 namespace Arbitragem.Dominio.Arbitragens
 {
     public class ResultadoArbitragem
     {
-        public Enumeradores.Enumeradores.Exchanges ComprarDe { get; }
-        public double PrecoDeCompra { get; }
-        public double PrecoDeVenda { get; }
-        public Enumeradores.Enumeradores.Exchanges VendarPara { get; }
 
+        public double QuantidadeParaSerComprada { get;}
+        public Enumeradores.Enumeradores.Exchanges ComprarDe { get; }
+        public Enumeradores.Enumeradores.Exchanges VendarPara { get; }
+        public IEnumerable<Ordem> OrdensParaCompra { get; } = new List<Ordem>();
+        public IEnumerable<Ordem> OrdensParaVenda { get; } = new List<Ordem>();
         public double Porcentagem { get; }
 
 
         public ResultadoArbitragem(Enumeradores.Enumeradores.Exchanges comprarDe,
-            Enumeradores.Enumeradores.Exchanges venderPara, double porcentagem, 
-            double precoDeCompra, double precoDeVenda)
+            Enumeradores.Enumeradores.Exchanges venderPara,
+            double quantidadeParaSerComprada,
+            IEnumerable<Ordem> ordensParaVenda, 
+            IEnumerable<Ordem> ordensParaCompra)
         {
             ComprarDe = comprarDe;
             VendarPara = venderPara;
-            Porcentagem = porcentagem;
-            PrecoDeCompra = precoDeCompra;
-            PrecoDeVenda = precoDeVenda;
+            QuantidadeParaSerComprada = quantidadeParaSerComprada;
+            OrdensParaCompra = ordensParaCompra;
+            OrdensParaVenda = ordensParaVenda;
+
+            Porcentagem = CalcularPorcentagemLucro();
         }
 
+        private double CalcularPorcentagemLucro()
+        {
+            if (!OrdensParaCompra.Any() || !OrdensParaVenda.Any()) return 0d;
 
+            var totalPrecoDeCompraPorQuantidade = OrdensParaCompra
+                .Sum(x => (x.Preco * x.Quantidade));
+
+            var totalPrecoDeVendaPorQuantidade = OrdensParaVenda
+                .Sum(x => (x.Preco * x.Quantidade));
+
+            //new cost - previous cost / previous cost
+            var porcentagemDeGanho = ((totalPrecoDeVendaPorQuantidade - totalPrecoDeCompraPorQuantidade) / totalPrecoDeCompraPorQuantidade) * 100;
+            
+
+            return porcentagemDeGanho;
+        }
     }
 }
