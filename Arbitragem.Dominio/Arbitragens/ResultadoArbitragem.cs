@@ -11,8 +11,8 @@ namespace Arbitragem.Dominio.Arbitragens
         public double QuantidadeParaSerComprada { get;}
         public Enumeradores.Enumeradores.Exchanges ComprarDe { get; }
         public Enumeradores.Enumeradores.Exchanges VendarPara { get; }
-        public IEnumerable<Ordem> OrdensParaCompra { get; } = new List<Ordem>();
-        public IEnumerable<Ordem> OrdensParaVenda { get; } = new List<Ordem>();
+        public IEnumerable<Ordem> OrdensParaCompra { get; }
+        public IEnumerable<Ordem> OrdensParaVenda { get; }
         public double Porcentagem { get; }
 
 

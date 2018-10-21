@@ -18,18 +18,18 @@ namespace Arbitragem.Dominio.Conversores
         public override IEnumerable<Ordem> ReadJson(JsonReader reader, Type objectType, IEnumerable<Ordem> existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
-            if (reader.TokenType != JsonToken.StartObject) return null;
+            if (reader.TokenType != JsonToken.StartObject) return Enumerable.Empty<Ordem>();
 
             var item = JObject.Load(reader);
 
-            if (item["data"] == null) return null;
+            if (item["data"] == null) return Enumerable.Empty<Ordem>();
 
             var dados = item["data"];
 
             var dadosDeCompraDoResultado = dados["bids"];
             var dadosDeVendaDoResultado = dados["asks"];
 
-            if (dadosDeCompraDoResultado == null || dadosDeVendaDoResultado == null) return null;
+            if (dadosDeCompraDoResultado == null || dadosDeVendaDoResultado == null) return Enumerable.Empty<Ordem>();
 
             var quantidadeTodasOrdens = dadosDeCompraDoResultado.Count() + dadosDeVendaDoResultado.Count();
 

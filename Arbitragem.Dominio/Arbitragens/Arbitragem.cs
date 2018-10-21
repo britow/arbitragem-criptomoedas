@@ -7,7 +7,7 @@ namespace Arbitragem.Dominio.Arbitragens
 {
     public class Arbitragem
     {
-        private IEnumerable<Exchange> _exchanges = new List<Exchange>();
+        private IEnumerable<Exchange> _exchanges = Enumerable.Empty<Exchange>();
 
         public IEnumerable<Exchange> Exchanges => _exchanges;
         public double QuantidadeDeBitcoinsParaNegociar { get; }

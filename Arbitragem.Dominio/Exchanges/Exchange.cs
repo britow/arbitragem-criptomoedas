@@ -6,8 +6,8 @@ namespace Arbitragem.Dominio.Exchanges
 {
     public class Exchange
     {
-        private IEnumerable<Ordem> _ordensDeCompra = new List<Ordem>();
-        private IEnumerable<Ordem> _ordensDeVenda = new List<Ordem>();
+        private IEnumerable<Ordem> _ordensDeCompra = Enumerable.Empty<Ordem>();
+        private IEnumerable<Ordem> _ordensDeVenda = Enumerable.Empty<Ordem>();
 
         public Enumeradores.Enumeradores.Exchanges Nome { get; }
         public double PrecoOfertaAtual { get; }
