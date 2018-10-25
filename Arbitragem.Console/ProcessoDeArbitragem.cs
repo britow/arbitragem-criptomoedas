@@ -13,17 +13,21 @@ namespace Arbitragem.Console
         internal readonly IServicoDeArbitragem ServicoDeArbitragem;
         internal readonly TimeSpan IntervaloDeExecucaoEmMinutos;
         internal readonly CultureInfo CulturaInfo;
+        internal readonly double QuantidadeDeBitcoinsParaNegociar;
 
         public ProcessoDeArbitragem(IServicoDeArbitragem servicoDeArbitragem, IConfiguration configuration)
         {
-            ServicoDeArbitragem = servicoDeArbitragem;
-
             int.TryParse(configuration["Configuracoes:IntervaloDeExecucaoEmMinutos"],
                 out var intervaloEmMinutos);
 
-            IntervaloDeExecucaoEmMinutos = new TimeSpan(0, 0, intervaloEmMinutos, 0);
+            double.TryParse(configuration["Configuracoes:QuantidadeDeBitcoinsParaNegociar"],
+                out QuantidadeDeBitcoinsParaNegociar);
 
             CulturaInfo = new CultureInfo(configuration["Configuracoes:CulturaInfo"]);
+
+            ServicoDeArbitragem = servicoDeArbitragem;
+
+            IntervaloDeExecucaoEmMinutos = new TimeSpan(0, 0, intervaloEmMinutos, 0);
 
         }
 
@@ -36,7 +40,7 @@ namespace Arbitragem.Console
 
                 var tarefaDeArbitragem = await Task.Factory.StartNew(async () =>
                     {
-                        await ServicoDeArbitragem.Iniciar();
+                        await ServicoDeArbitragem.Iniciar(QuantidadeDeBitcoinsParaNegociar);
                     },
                     cancellationToken);
 
@@ -50,7 +54,7 @@ namespace Arbitragem.Console
 
                     tarefaDeArbitragem = await Task.Factory.StartNew(async () =>
                     {
-                        await ServicoDeArbitragem.Iniciar();
+                        await ServicoDeArbitragem.Iniciar(QuantidadeDeBitcoinsParaNegociar);
                     }, cancellationToken);
                 }
 

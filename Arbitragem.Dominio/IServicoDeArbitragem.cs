@@ -4,6 +4,6 @@ namespace Arbitragem.Dominio
 {
     public interface IServicoDeArbitragem
     {
-        Task Iniciar();
+        Task Iniciar(double quantidadeDeBitcoinsParaNegociar);
     }
 }

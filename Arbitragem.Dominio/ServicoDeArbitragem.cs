@@ -16,11 +16,9 @@ namespace Arbitragem.Dominio
             _acao = acao;
         }
 
-        public async Task Iniciar()
+        public async Task Iniciar(double quantidadeDeBitcoinsParaNegociar)
         {
             await _construtorGeralDeExchanges.ConstruirTodas();
-
-            var quantidadeDeBitcoinsParaNegociar = 5.34;
 
             var arbitragem = new Arbitragens.Arbitragem(_construtorGeralDeExchanges.Exchanges, quantidadeDeBitcoinsParaNegociar);
 

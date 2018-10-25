@@ -15,6 +15,7 @@
     "EnderecoBase": "https://publicapi.flowbtc.com.br"
   },
   "Configuracoes": {
+    "QuantidadeDeBitcoinsParaNegociar": "0.25",
     "IntervaloDeExecucaoEmMinutos": 5,
     "CulturaInfo": "pt-br"
   }
