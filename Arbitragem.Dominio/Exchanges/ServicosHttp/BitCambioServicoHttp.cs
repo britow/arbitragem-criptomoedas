@@ -36,7 +36,7 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
                 .ReadAsStringAsync();
 
             var exchange = JsonConvert.DeserializeObject<Exchange>(resultadoEmString,
-                new BitCambioExchangeJsonConverter());
+                FabricaDeConversoresJson.CriaConversorJsonDeExchange(Enumeradores.Enumeradores.Exchanges.BitCambio));
 
             return exchange;
         }
@@ -52,7 +52,7 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
                 .ReadAsStringAsync();
 
             var ordens = JsonConvert.DeserializeObject<IEnumerable<Ordem>>(resultadoEmString,
-                new BitCambioOrdensJsonConverter());
+                FabricaDeConversoresJson.CriaConversorJsonDeOrdens(Enumeradores.Enumeradores.Exchanges.BitCambio));
 
             return ordens;
         }

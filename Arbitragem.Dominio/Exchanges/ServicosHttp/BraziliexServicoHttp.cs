@@ -36,7 +36,7 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
                 .ReadAsStringAsync();
 
             var exchange = JsonConvert.DeserializeObject<Exchange>(resultadoEmString,
-                new BraziliexExchangeJsonConverter());
+                FabricaDeConversoresJson.CriaConversorJsonDeExchange(Enumeradores.Enumeradores.Exchanges.Braziliex));
 
             return exchange;
         }
@@ -52,7 +52,7 @@ namespace Arbitragem.Dominio.Exchanges.ServicosHttp
                 .ReadAsStringAsync();
 
             var ordens = JsonConvert.DeserializeObject<IEnumerable<Ordem>>(resultadoEmString,
-                new BraziliexOrdensJsonConverter());
+                FabricaDeConversoresJson.CriaConversorJsonDeOrdens(Enumeradores.Enumeradores.Exchanges.Braziliex));
 
             return ordens;
         }
